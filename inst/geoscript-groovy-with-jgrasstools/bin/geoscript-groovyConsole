@@ -1,0 +1,33 @@
+#!/bin/bash
+
+GROOVY=""
+if [ "$GROOVY_HOME" != "" ]; then
+  GROOVY=$GROOVY_HOME/bin/groovyConsole
+else
+  which groovy > /dev/null
+  if [ "$?" == "1" ]; then
+    echo "GROOVY_HOME is not defined, and groovyConsole is not on the current PATH"
+    exit
+  fi
+  GROOVY=`which groovyConsole`
+fi
+
+LIBDIR=`dirname $0`/../lib
+LIBDIR=`cd $LIBDIR; pwd`
+
+if [ ! -e "$LIBDIR" ]; then
+  echo "GeoScript Groovy lib directory not found"
+  exit
+fi
+
+CLASSPATH=""
+for jar in `ls $LIBDIR`; do
+  if [ "$CLASSPATH" == "" ]; then
+    CLASSPATH=$LIBDIR/$jar
+  else
+    CLASSPATH=$CLASSPATH:$LIBDIR/$jar
+  fi
+done
+
+export JAVA_OPTS=-Dorg.geotools.referencing.forceXY=true
+"$GROOVY" -cp $CLASSPATH "$@"

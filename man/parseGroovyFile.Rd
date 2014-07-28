@@ -1,0 +1,33 @@
+\name{parseGroovyFile}
+\alias{parseGroovyFile}
+\title{parseGroovyFile}
+\usage{
+
+  parseGroovyFile(file = "/Users/ecor/Dropbox/hydropica/sourcesR/rjgrassGroovySmartBridge/inst/geoscript-groovy/geomorphological.analysis.groovy",
+  prefix = "rvar_", io.type = c("input", "output"), ...)
+}
+\arguments{
+  \item{file}{groovy file name}
+
+  \item{prefix}{character sting indicationg the i/o
+  variables in the groovy template script file}
+
+  \item{io.type}{character sting indicationg the
+  input-output options in the groovy template script file}
+
+  \item{...}{further arguments}
+}
+\description{
+Parsing the groovy file
+}
+\examples{
+library(rjgrassGroovySmartBridge)
+
+file <- system.file("geoscript-groovy/geomorphological.analysis.groovy",package="rjgrassGroovySmartBridge")
+out <- parseGroovyFile(file=file)
+}
+\seealso{
+\url{http://groovy.codehaus.org},\url{http://groovy.codehaus.org/Tutorial+1+-+Getting+started}(Groovy
+Tutorial)
+}
+

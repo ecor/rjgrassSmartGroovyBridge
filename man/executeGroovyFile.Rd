@@ -1,0 +1,84 @@
+\name{executeGroovyFile}
+\alias{executeGroovyFile}
+\title{executeGrovyFile}
+\usage{
+executeGroovyFile(x, inputVar, outputVar = NULL, putOutputNames = FALSE,
+  command = "jgrass-geoscript-groovy",
+  command_path = system.file("geoscript-groovy-with-jgrasstools/bin", package
+  = "rjgrassGroovySmartBridge"),
+  generated.geoscript = paste(system.file("temporary_output", package =
+  "rjgrassGroovySmartBridge"), "last_geoscript.groovy", sep = "/"),
+  sys.setenv = list(GROOVY_HOME = "/usr/local/groovy-2.1.6:/opt/local:/usr"),
+  verbose = TRUE, ...)
+}
+\arguments{
+  \item{x}{a S3 \code{ParsedGroovyScriptIOVar} object}
+
+  \item{inputVar}{list with input variables}
+
+  \item{outputVar}{list with output variables}
+
+  \item{putOutputNames}{logical argument. Default is
+  \code{FALSE}. See \code{\link{putValueInScript}}.}
+
+  \item{command}{string containing the Groovy command with
+  necessary arguments.}
+
+  \item{command_path}{string with the full path to the
+  directory containing the \code{command} executable file.
+  In Unix-like system,type \code{which groovy} to find the
+  correct path.}
+
+  \item{generated.geoscript}{file neme of the generated
+  script run by \code{command}.}
+
+  \item{sys.setenv}{list of environment variable settings
+  required by \code{command}. See examples and usage. If
+  \code{NULL} no environmental variables are set.}
+
+  \item{verbose}{verbose modality. Default is \code{TRUE}.}
+
+  \item{...}{further arguments}
+}
+\description{
+Execute a Geoscript-groovy or Groovy Script File
+}
+\examples{
+library(rjgrassGroovySmartBridge)
+
+
+file <- system.file("geoscript-groovy/geomorphological.analysis.groovy",package="rjgrassGroovySmartBridge")
+groovy <- parseGroovyFile(file=file)
+
+dem  <- system.file("examples/match100m.asc",package="rjgrassGroovySmartBridge")
+
+### INPUT VARIABLE
+input <- list()
+input$elevAsc <- dem
+input$pThresScalar <- 10
+
+## OUTPUT VARIABLE
+
+###output <- list()
+outwpath <- system.file("temporary_output",package="rjgrassGroovySmartBridge")
+
+output <- groovy[str_detect(unlist(lapply(X=groovy,FUN=function(x){attr(x,"io.type")})),"output")]
+
+names_output <- names(output)
+output <- lapply(X=names(output),FUN=function(x,outwpath){
+   				out <- str_replace(x," ","_")
+					out <- paste("output",out,sep="_")
+					out <- paste(outwpath,out,sep="/")
+					extension <- "asc"
+					if (str_detect(x,"Asc")) extension <- "asc"
+					if (str_detect(x,"Shp")) extension <- "shp"
+					out <- paste(out,extension,sep=".")
+					return(out)
+
+},outwpath=outwpath)
+
+names(output) <- names_output
+
+executeGroovyFile(groovy,inputVar=input,outputVar=output)
+}
+

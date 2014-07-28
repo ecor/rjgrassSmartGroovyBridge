@@ -1,0 +1,52 @@
+#!/bin/bash
+
+GROOVY=""
+if [ "$GROOVY_HOME" != "" ]; then
+  GROOVY=$GROOVY_HOME/bin/groovy
+else
+  which groovy > /dev/null
+  if [ "$?" == "1" ]; then
+    echo "GROOVY_HOME is not defined, and groovy is not on the current PATH"
+    exit
+  fi
+  GROOVY=`which groovy`
+fi
+
+LIBDIR=`dirname $0`/../lib
+LIBDIR=`cd $LIBDIR; pwd`
+
+if [ ! -e "$LIBDIR" ]; then
+  echo "GeoScript Groovy lib directory not found"
+  exit
+fi
+
+CLASSPATH=""
+for jar in `ls $LIBDIR`; do
+  if [ "$CLASSPATH" == "" ]; then
+    CLASSPATH=$LIBDIR/$jar
+  else
+    CLASSPATH=$CLASSPATH:$LIBDIR/$jar
+  fi
+done
+
+## added by ecor on Jun 25 2014
+JGRASSLIBDIR=`dirname $0`/../jgrass-lib
+JGRASSLIBDIR=`cd $JGRASSLIBDIR; pwd`
+if [ ! -e "$JGRASSLIBDIR" ]; then
+  echo "GeoScript Groovy jgrass-lib directory not found"
+  exit
+fi
+
+for jar in `ls $JGRASSLIBDIR`; do
+  if [ "$CLASSPATH" == "" ]; then
+    CLASSPATH=$JGRASSLIBDIR/$jar
+  else
+    CLASSPATH=$CLASSPATH:$JGRASSLIBDIR/$jar
+  fi
+done
+
+echo "Jgrasstools are in $JGRASSLIBDIR"
+
+
+
+"$GROOVY" -cp $CLASSPATH -Dorg.geotools.referencing.forceXY=true "$@"

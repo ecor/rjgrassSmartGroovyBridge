@@ -1,0 +1,25 @@
+\name{print.ParsedGroovyScriptIOVar}
+\alias{print}
+\alias{print.ParsedGroovyScriptIOVar}
+\title{\code{print} S3 method for \code{ParsedGroovyScriptIOVar} object returned by \code{\link{parseGroovyFile}}}
+\usage{
+\method{print}{ParsedGroovyScriptIOVar}(x, ...)
+}
+\arguments{
+  \item{x}{a \code{ParsedGroovyScriptIOVar} object}
+
+  \item{...}{passed arguments to \code{\link{writeLines}}}
+}
+\description{
+\code{print} S3 method for \code{ParsedGroovyScriptIOVar}
+object returned by \code{\link{parseGroovyFile}}
+}
+\examples{
+library(rjgrassGroovySmartBridge)
+
+
+file <- system.file("geoscript-groovy/geomorphological.analysis.groovy",package="rjgrassGroovySmartBridge")
+groovy <- parseGroovyFile(file=file)
+groovy
+}
+

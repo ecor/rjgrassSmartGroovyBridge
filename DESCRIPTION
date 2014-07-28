@@ -1,0 +1,14 @@
+Package: rjgrassGroovySmartBridge
+Maintainer: Emanuele Cordano <emanuele.cordano@gmail.com>
+License: GPL (>= 2)
+Title: rjgrassGroovySmartBridge
+Type: Package
+Version: 1.0
+Author: Emanuele Cordano
+Description: It is an R interface to run geoscript-groovy scripts with
+    Jgrasstools. (http://moovida.github.io/jgrasstools/).  Any contributions or
+    suggestions are warmly welcomed.
+URL: githb project
+Depends:
+    stringr,raster,methods
+Date: 2014-05-22
