@@ -90,7 +90,7 @@ executeGroovyFile <- function(x,inputVar,outputVar=NULL,putOutputNames=FALSE,com
 	print(GroovyBinExt)
 	if (length(GroovyBinExt)==0) {
 		
-		stop("No correct setting for GROOVY_HOME environent variable! Re-st with sys.setenv argument!!!")
+		stop("No correct setting for GROOVY_HOME environment variable! Re-st with sys.setenv argument!!!")
 		
 	} else { 
 	

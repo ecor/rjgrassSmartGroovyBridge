@@ -12,3 +12,4 @@ URL: githb project
 Depends:
     stringr,raster,methods
 Date: 2014-05-22
+RoxygenNote: 5.0.1
