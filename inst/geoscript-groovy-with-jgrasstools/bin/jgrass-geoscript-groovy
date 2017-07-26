@@ -11,8 +11,9 @@ else
   fi
   GROOVY=`which groovy`
 fi
-
+echo $0
 LIBDIR=`dirname $0`/../lib
+echo $LIBDIR
 LIBDIR=`cd $LIBDIR; pwd`
 
 if [ ! -e "$LIBDIR" ]; then

@@ -1,0 +1,60 @@
+#!/bin/bash
+
+GROOVY=""
+if [ "$GROOVY_HOME" != "" ]; then
+  GROOVY=$GROOVY_HOME/bin/groovy
+else
+  which groovy > /dev/null
+  if [ "$?" == "1" ]; then
+    echo "GROOVY_HOME is not defined, and groovy is not on the current PATH"
+    exit
+  fi
+  GROOVY=`which groovy`
+fi
+
+LIBDIR=`dirname $0`/../lib
+LIBDIR=`cd $LIBDIR; pwd`
+
+if [ ! -e "$LIBDIR" ]; then
+  echo "GeoScript Groovy lib directory not found"
+  exit
+fi
+
+CLASSPATH=""
+for jar in `ls $LIBDIR`; do
+  if [ "$CLASSPATH" == "" ]; then
+    CLASSPATH=$LIBDIR/$jar
+  else
+    CLASSPATH=$CLASSPATH:$LIBDIR/$jar
+  fi
+done
+
+if [ -e "$GEOSCRIPT_GDAL_HOME" ]; then
+    if [ "$(uname)" == "Darwin" ]; then
+        if [ "$DYLD_LIBRARY_PATH" == "" ]; then
+            export DYLD_LIBRARY_PATH=$GEOSCRIPT_GDAL_HOME
+        else
+            export DYLD_LIBRARY_PATH=$GEOSCRIPT_GDAL_HOME:$DYLD_LIBRARY_PATH
+        fi
+    elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+        if [ "$LD_LIBRARY_PATH" == "" ]; then
+            export LD_LIBRARY_PATH=$GEOSCRIPT_GDAL_HOME
+        else
+            export LD_LIBRARY_PATH=$GEOSCRIPT_GDAL_HOME:$LD_LIBRARY_PATH
+        fi
+    elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+        if [ "$PATH" == "" ]; then
+            export PATH=$GEOSCRIPT_GDAL_HOME
+        else
+            export PATH=$GEOSCRIPT_GDAL_HOME:$PATH
+        fi
+    elif [ "$(expr substr $(uname -s) 1 6)" == "CYGWIN" ]; then
+        if [ "$PATH" == "" ]; then
+            export PATH=$GEOSCRIPT_GDAL_HOME
+        else
+            export PATH=$GEOSCRIPT_GDAL_HOME:$PATH
+        fi
+    fi
+fi
+
+"$GROOVY" -cp $CLASSPATH -Dorg.geotools.referencing.forceXY=true "$@"

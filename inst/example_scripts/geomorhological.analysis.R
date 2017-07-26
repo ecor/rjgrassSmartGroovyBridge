@@ -20,8 +20,8 @@ input$pThresScalar <- 10
 ## OUTPUT VARIABLE
 
 ###output <- list()
-outwpath <- system.file("temporary_output",package="rjgrassGroovySmartBridge")
-
+#outwpath <- system.file("temporary_output",package="rjgrassGroovySmartBridge")
+outwpath  <- "/home/ecor/temp"
 output <- groovy[str_detect(unlist(lapply(X=groovy,FUN=function(x){attr(x,"io.type")})),"output")]
 
 names_output <- names(output)

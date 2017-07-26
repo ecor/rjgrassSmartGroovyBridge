@@ -7,11 +7,9 @@
 executeGroovyFile(x, inputVar, outputVar = NULL, putOutputNames = FALSE,
   command = "jgrass-geoscript-groovy",
   command_path = system.file("geoscript-groovy-with-jgrasstools/bin", package
-  = "rjgrassGroovySmartBridge"),
-  generated.geoscript = paste(system.file("temporary_output", package =
-  "rjgrassGroovySmartBridge"), "last_geoscript.groovy", sep = "/"),
-  sys.setenv = list(GROOVY_HOME = "/usr/local/groovy-2.1.6:/opt/local:/usr"),
-  verbose = TRUE, ...)
+  = "rjgrassGroovySmartBridge"), generated.geoscript = paste("temp",
+  "last_geoscript.groovy", sep = "/"), sys.setenv = list(GROOVY_HOME =
+  "/usr/local/groovy-2.1.6:/opt/local:/usr"), verbose = TRUE, ...)
 }
 \arguments{
 \item{x}{a S3 \code{ParsedGroovyScriptIOVar} object}
